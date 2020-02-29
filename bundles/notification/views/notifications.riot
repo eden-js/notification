@@ -1,5 +1,5 @@
 <notifications>
-  <ul class="nav navbar-nav navbar-right">
+  <ul class={ props.className || 'nav navbar-nav navbar-right' }>
     <li class="nav-item dropdown" ref="dropdown">
       <a href="#!" class="nav-link dropdown-toggle mr-2" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
         <i class="fa fa-bell" /> <span class="badge badge-danger" if={ getUnread() }>{ getUnread().toLocaleString() }</span>
