@@ -6,8 +6,7 @@ const Controller = require('controller');
 const Notification = model('notification');
 
 // require helpers
-const modelHelper = helper('model');
-const notificationHelper = helper('notification');
+const syncHelper = helper('sync');
 
 /**
  * Build notification controller
@@ -138,7 +137,7 @@ class NotificationController extends Controller {
     opts.socket.join(`notification.${id}`);
 
     // add to room
-    return await modelHelper.listen(opts.sessionID, await Notification.findById(id), uuid, true);
+    return await syncHelper.listen(opts.sessionID, await Notification.findById(id), uuid, true);
   }
 
   /**
@@ -158,7 +157,7 @@ class NotificationController extends Controller {
     opts.socket.leave(`notification.${id}`);
 
     // add to room
-    return await modelHelper.deafen(opts.sessionID, await Notification.findById(id), uuid, true);
+    return await syncHelper.deafen(opts.sessionID, await Notification.findById(id), uuid, true);
   }
 }
 
