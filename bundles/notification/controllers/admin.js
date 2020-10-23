@@ -13,7 +13,6 @@ const Block = model('block');
 
 // require helpers
 const formHelper  = helper('form');
-const fieldHelper = helper('form/field');
 const blockHelper = helper('cms/block');
 
 /**
@@ -110,53 +109,6 @@ class NotificationAdminController extends Controller {
 
       // save block
       await blockModel.save(req.user);
-    });
-
-    //
-    // REGISTER FIELDS
-    //
-
-    // register simple field
-    fieldHelper.field('admin.notification', {
-      for         : ['admin'],
-      title       : 'Notification',
-      description : 'Notification Field',
-    }, async (req, field, value) => {
-      // set tag
-      field.tag = 'notification';
-      field.value = value ? (Array.isArray(value) ? await Promise.all(value.map(item => item.sanitise())) : await value.sanitise()) : null;
-
-      // return
-      return field;
-    }, async (req, field) => {
-      // save field
-    }, async (req, field, value, old) => {
-      // set value
-      try {
-        // set value
-        value = JSON.parse(value);
-      } catch (e) {}
-
-      // check value
-      if (!Array.isArray(value)) value = [value];
-
-      // return value map
-      return await Promise.all((value || []).filter(val => val).map(async (val, i) => {
-        // run try catch
-        try {
-          // buffer notification
-          const notification = await Notification.findById(val);
-
-          // check notification
-          if (notification) return notification;
-
-          // return null
-          return null;
-        } catch (e) {
-          // return old
-          return old[i];
-        }
-      }));
     });
   }
 
